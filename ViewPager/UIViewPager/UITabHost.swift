@@ -10,6 +10,8 @@ import UIKit
 
 let defaultColor = UIColor(white: 0.7725, alpha: 0.75)
 
+public typealias OnClickCallBack = (tabHost:UITabHost)->Void;
+
 public class UITabHost: UIView {
     //MARK: Properties
     public var selectedColor:UIColor = defaultColor
@@ -24,14 +26,18 @@ public class UITabHost: UIView {
     /// text's color
     public var titleColor:UIColor = defaultColor {
         didSet {
-            contentView?.textColor = titleColor;
+            if let label = contentView as? UILabel {
+                label.textColor = titleColor;
+            }
         }
     }
     
     /// text's font
     public var titleFont:UIFont = UIFont.systemFontOfSize(14) {
         didSet {
-            contentView?.font = titleFont;
+            if let label = contentView as? UILabel {
+                label.font = titleFont;
+            }
         }
     }
     
@@ -52,12 +58,18 @@ public class UITabHost: UIView {
                 contentView = UILabel();
                 contentView!.backgroundColor = UIColor.clearColor();
             }
-            contentView!.text = newValue;
-            adjustLabel(contentView!);
+            if let label = contentView as? UILabel {
+                label.text = newValue;
+                adjustLabel(label);
+            }
         }
         
         get {
-            return contentView?.text;
+            if let label = contentView as? UILabel {
+                return label.text;
+            }else {
+                return "";
+            }
         }
     }
     
@@ -78,7 +90,7 @@ public class UITabHost: UIView {
         label.center = CGPointMake(bounds.width/2, bounds.height/2);
     }
     
-    var contentView:UILabel? {
+    public var contentView:UIView? {
         didSet {
             if let view = oldValue {
                 view.removeFromSuperview();
@@ -89,6 +101,8 @@ public class UITabHost: UIView {
             }
         }
     }
+    
+    public var onClick:OnClickCallBack?
     
     //MARK: Initials
     required public init(coder aDecoder: NSCoder) {
@@ -137,19 +151,37 @@ public class UITabHost: UIView {
         bezierPath.lineWidth = 5;
         bezierPath.stroke();
     }
+    
+    //MARK: Actions
+    public override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if let onClick = self.onClick {
+            onClick(tabHost: self);
+        }
+    }
 }
 
-@objc protocol TabHostDataSource:NSObjectProtocol {
+@objc protocol UITabHostDataSource:NSObjectProtocol {
     func numberOfTabHostsWithContainer(container:UITabHostsContainer)->UInt;
     
     optional func titleAtIndex(index:UInt, container:UITabHostsContainer)->String;
     optional func viewAtIndex(index:UInt, container:UITabHostsContainer)->UIView;
 }
 
+@objc protocol UITabHostDelegate:NSObjectProtocol {
+    optional func didSelectTabHost(index:UInt, container:UITabHostsContainer);
+    
+    optional func topColorForTabHost(index:UInt, container:UITabHostsContainer)->UIColor;
+    optional func bottomColorForTabHost(index:UInt, container:UITabHostsContainer)->UIColor;
+    optional func selectedColorForTabHost(index:UInt, container:UITabHostsContainer)->UIColor;
+    optional func titleColorForTabHost(index:UInt, container:UITabHostsContainer)->UIColor;
+    optional func titleFontForTabHost(index:UInt, container:UITabHostsContainer)->UIFont;
+}
+
 
 class UITabHostsContainer: UIView {
     var scrollView:UIScrollView!
-    var dataSource:TabHostDataSource?
+    var dataSource:UITabHostDataSource?
+    var delegate:UITabHostDelegate?
     var selectedIndex:Int = 0
     
     // Cash for tab hosts
@@ -191,16 +223,21 @@ class UITabHostsContainer: UIView {
     }
     
     func createTabs() {
-        var capacity = dataSource?.numberOfTabHostsWithContainer(self);
+        if let dataSource = self.dataSource {
+            var capacity = dataSource.numberOfTabHostsWithContainer(self);
+            for i:UInt in 0...capacity {
+                createView(i, capacity: capacity);
+            }
+        }
         
     }
     
     func createView(index:UInt, capacity:UInt){
         var tabHost:UITabHost!;
         if let view = dataSource?.viewAtIndex?(index, container: self) {
-            tabHost = createTabHostByView(view, index: index, capacity: capacity);
+            tabHost = createTabHostWithView(view, index: index, capacity: capacity);
         }else if let title = dataSource?.titleAtIndex?(index, container: self){
-            tabHost = createTabHost(title, index:index, capacity: capacity);
+            tabHost = createTabHostWithTitle(title, index:index, capacity: capacity);
         }
         
         scrollView.addSubview(tabHost);
@@ -208,17 +245,68 @@ class UITabHostsContainer: UIView {
         //TODO: response to delegate
     }
     
-    func createTabHost(title:String, index:UInt, capacity:UInt)->UITabHost {
+    func unselectAllTabHost() {
+        for tabHost in tabArray {
+            tabHost.selected = false;
+        }
+    }
+    
+    func createTabHostWithTitle(title:String, index:UInt, capacity:UInt)->UITabHost {
         var width = tabHostWidthWithCapacity(capacity);
         var tabHost = UITabHost(frame: CGRectMake(width*index, 0, width, self.frame.height));
-        
+        customizeTabHost(tabHost, index: index);
+        if let title = dataSource?.titleAtIndex?(index, container: self) {
+            tabHost.title = title;
+        }
         return tabHost;
     }
     
-    func createTabHostByView(view:UIView, index:UInt, capacity:UInt)->UITabHost {
-        return UITabHost(frame: CGRectMake(0, 0, 0, 0));
+    func createTabHostWithView(view:UIView, index:UInt, capacity:UInt)->UITabHost {
+        var width = tabHostWidthWithCapacity(capacity);
+        var tabHost = UITabHost(frame: CGRectMake(width*index, 0, width, self.frame.height));
+        if let view = self.dataSource?.viewAtIndex?(index, container: self)  {
+            tabHost.contentView = view;
+        }
+        return tabHost;
     }
     
+    /**
+    Apply the delegate's appearance setting
+    
+    :param: tabHost the UITabHost to be setting
+    :param: index the index of UITabHost
+    */
+    func customizeTabHost(tabHost:UITabHost, index:UInt) {
+        if let delegate = self.delegate {
+            if let color = delegate.topColorForTabHost?(index, container: self) {
+                tabHost.topColor = color;
+            }
+            
+            if let color = delegate.bottomColorForTabHost?(index, container: self) {
+                tabHost.bottomColor = color;
+            }
+            
+            if let color = delegate.selectedColorForTabHost?(index, container: self) {
+                tabHost.selectedColor = color;
+            }
+            
+            if let color = delegate.titleColorForTabHost?(index, container: self) {
+                tabHost.titleColor = color;
+            }
+            
+            if let font = delegate.titleFontForTabHost?(index, container: self) {
+                tabHost.titleFont = font;
+            }
+        }
+    }
+    
+    /**
+    Calculate the tab host width, the max count is 3.
+    
+    :param: capacity tab host count
+    
+    :returns: single tab host's width
+    */
     func tabHostWidthWithCapacity(capacity:UInt)->CGFloat {
         switch(capacity) {
         case 1:

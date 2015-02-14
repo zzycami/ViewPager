@@ -18,22 +18,27 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kkl-Op-02J" customClass="UITabHost" customModule="UIViewPager">
-                                <rect key="frame" x="74" y="43" width="171" height="46"/>
+                                <rect key="frame" x="31" y="28" width="171" height="46"/>
                                 <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ca-cZ-bQ0" customClass="UITabHost" customModule="UIViewPager">
-                                <rect key="frame" x="69" y="259" width="215" height="43"/>
+                                <rect key="frame" x="22" y="245" width="215" height="43"/>
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Js-yP-EKt" customClass="UITabHost" customModule="UIViewPager">
-                                <rect key="frame" x="36" y="141" width="300" height="65"/>
+                                <rect key="frame" x="0.0" y="128" width="300" height="65"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ex-Yf-lEw" customClass="UITabHost" customModule="UIViewPager">
+                                <rect key="frame" x="22" y="333" width="290" height="51"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="tabHost" destination="kkl-Op-02J" id="sGi-TE-eCm"/>
+                        <outlet property="tabHostCustom" destination="8ex-Yf-lEw" id="rb9-Ol-eEa"/>
                         <outlet property="tabHostLarge" destination="3Js-yP-EKt" id="UvG-ZD-V19"/>
                         <outlet property="tabHostSelected" destination="0ca-cZ-bQ0" id="r1Q-HF-3A8"/>
                     </connections>
