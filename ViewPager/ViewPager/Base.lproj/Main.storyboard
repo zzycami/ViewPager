@@ -17,34 +17,93 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kkl-Op-02J" customClass="UITabHost" customModule="UIViewPager">
-                                <rect key="frame" x="31" y="28" width="171" height="46"/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ca-cZ-bQ0" customClass="UITabHost" customModule="UIViewPager">
-                                <rect key="frame" x="22" y="245" width="215" height="43"/>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Js-yP-EKt" customClass="UITabHost" customModule="UIViewPager">
-                                <rect key="frame" x="0.0" y="128" width="300" height="65"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ex-Yf-lEw" customClass="UITabHost" customModule="UIViewPager">
-                                <rect key="frame" x="22" y="333" width="290" height="51"/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="taA-MS-DVo" customClass="UITabHostsContainer" customModule="UIViewPager">
+                                <rect key="frame" x="16" y="418" width="333" height="71"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="71" id="HPO-3K-bzn">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="50"/>
+                                    </constraint>
+                                    <constraint firstAttribute="height" constant="50" id="ZZI-2v-AuO"/>
+                                    <constraint firstAttribute="height" constant="50" id="knW-xD-vrK"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="HPO-3K-bzn"/>
+                                        <exclude reference="ZZI-2v-AuO"/>
+                                        <exclude reference="knW-xD-vrK"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="ZZI-2v-AuO"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="knW-xD-vrK"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="HPO-3K-bzn"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="taA-MS-DVo" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="0cU-7p-sM7"/>
+                            <constraint firstAttribute="trailing" secondItem="taA-MS-DVo" secondAttribute="trailing" id="DPu-MN-Qhe"/>
+                            <constraint firstItem="taA-MS-DVo" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="I3y-I5-iEh"/>
+                            <constraint firstAttribute="trailing" secondItem="taA-MS-DVo" secondAttribute="trailing" id="KBI-vV-JyU"/>
+                            <constraint firstItem="taA-MS-DVo" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="13" id="Qkx-k2-EIB"/>
+                            <constraint firstAttribute="trailing" secondItem="taA-MS-DVo" secondAttribute="trailing" id="SgJ-x6-yMF"/>
+                            <constraint firstItem="taA-MS-DVo" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="Yn9-ux-RpC"/>
+                            <constraint firstItem="taA-MS-DVo" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="ckh-UF-WU3"/>
+                            <constraint firstItem="taA-MS-DVo" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="hL9-uf-Yre"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="0cU-7p-sM7"/>
+                                <exclude reference="DPu-MN-Qhe"/>
+                                <exclude reference="I3y-I5-iEh"/>
+                                <exclude reference="KBI-vV-JyU"/>
+                                <exclude reference="Qkx-k2-EIB"/>
+                                <exclude reference="SgJ-x6-yMF"/>
+                                <exclude reference="Yn9-ux-RpC"/>
+                                <exclude reference="ckh-UF-WU3"/>
+                                <exclude reference="hL9-uf-Yre"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <include reference="KBI-vV-JyU"/>
+                                <include reference="Qkx-k2-EIB"/>
+                                <include reference="ckh-UF-WU3"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="I3y-I5-iEh"/>
+                                <include reference="SgJ-x6-yMF"/>
+                                <include reference="hL9-uf-Yre"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="0cU-7p-sM7"/>
+                                <include reference="DPu-MN-Qhe"/>
+                                <include reference="Yn9-ux-RpC"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
-                        <outlet property="tabHost" destination="kkl-Op-02J" id="sGi-TE-eCm"/>
-                        <outlet property="tabHostCustom" destination="8ex-Yf-lEw" id="rb9-Ol-eEa"/>
-                        <outlet property="tabHostLarge" destination="3Js-yP-EKt" id="UvG-ZD-V19"/>
-                        <outlet property="tabHostSelected" destination="0ca-cZ-bQ0" id="r1Q-HF-3A8"/>
+                        <outlet property="tabHostContainer" destination="taA-MS-DVo" id="SZw-3u-PfW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="186" y="223.5"/>
         </scene>
     </scenes>
 </document>
