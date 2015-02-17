@@ -144,7 +144,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
         if currentIndex != index {
             currentIndex = index;
             UIView.animateWithDuration(0.2, animations: { () -> Void in
-                var point = contentViewControllers[index].bounds.origin;
+                var point = contentViews[index].bounds.origin;
                 self.contentView.contentOffset = point;
             });
             
