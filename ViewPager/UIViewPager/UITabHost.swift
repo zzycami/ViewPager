@@ -172,8 +172,8 @@ public class UITabHost: UIView {
 @objc public protocol UITabHostDataSource:NSObjectProtocol {
     func numberOfTabHostsWithContainer(container:UITabHostsContainer)->Int;
     
-    optional func titleAtIndex(index:Int, container:UITabHostsContainer)->String;
-    optional func viewAtIndex(index:Int, container:UITabHostsContainer)->UIView;
+    optional func titleAtIndex(index:Int, container:UITabHostsContainer)->String?;
+    optional func viewAtIndex(index:Int, container:UITabHostsContainer)->UIView?;
 }
 
 @objc public protocol UITabHostDelegate:NSObjectProtocol {
@@ -288,6 +288,13 @@ public class UITabHostsContainer: UIView {
                 delegate.didSelectTabHost?(index, container: self);
             }
         }
+    }
+    
+    public func setSelected(index:Int) {
+        if index < 0 || index > tabArray.count {
+            return;
+        }
+        tabArray[index].selected = true;
     }
     
     public func moveToCorrectPointOfScrollView(index:Int) {
