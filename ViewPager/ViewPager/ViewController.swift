@@ -9,17 +9,24 @@
 import UIKit
 import UIViewPager
 
-class ViewController: UIViewController, UITabHostDataSource, UITabHostDelegate {
-    @IBOutlet weak var tabHostContainer: UITabHostsContainer!
+class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelegate {
     
-    var dataSource:[String] = ["Title A", "Title B", "Title C", "Title D", "Title E"]
+    @IBOutlet weak var viewPager: UIViewPager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tabHostContainer.dataSource = self;
-        self.tabHostContainer.delegate = self;
-        self.tabHostContainer.reloadData();
+        // Add child view controller
+        var viewController1 = storyboard?.instantiateViewControllerWithIdentifier("ViewController1") as! UIViewController;
+        var viewController2 = storyboard?.instantiateViewControllerWithIdentifier("ViewController2") as! UIViewController;
+        var viewController3 = storyboard?.instantiateViewControllerWithIdentifier("ViewController3") as! UIViewController;
+        addChildViewController(viewController1);
+        addChildViewController(viewController2);
+        addChildViewController(viewController3);
+        
+        self.viewPager.dataSouce = self;
+        self.viewPager.delegate = self;
+        self.viewPager.reloadData();
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,20 +34,21 @@ class ViewController: UIViewController, UITabHostDataSource, UITabHostDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func numberOfTabHostsWithContainer(container: UITabHostsContainer) -> Int {
-        return dataSource.count;
+    func numberOfItems(viewPager: UIViewPager) -> Int {
+        return self.childViewControllers.count;
     }
     
-    func titleAtIndex(index: Int, container: UITabHostsContainer) -> String {
-        return dataSource[index];
+    func controller(viewPager: UIViewPager, index: Int) -> UIViewController {
+        return self.childViewControllers[index] as! UIViewController;
     }
     
-    func titleColorForTabHost(index: Int, container: UITabHostsContainer) -> UIColor {
-        return UIColor.redColor();
-    }
-    
-    func selectedColorForTabHost(index: Int, container: UITabHostsContainer) -> UIColor {
-        return UIColor.blueColor();
+    func titleForItem(viewPager: UIViewPager, index: Int) -> String {
+        if let viewController = self.childViewControllers[index] as? UIViewController {
+            if let title = viewController.title {
+                return title;
+            }
+        }
+        return "";
     }
 }
 
