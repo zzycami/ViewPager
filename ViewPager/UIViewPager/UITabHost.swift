@@ -190,9 +190,9 @@ public class UITabHost: UIView {
 public class UITabHostsContainer: UIView {
     var scrollView:UIScrollView!
     
-    public var dataSource:UITabHostDataSource?
+    public weak var dataSource:UITabHostDataSource?
     
-    public var delegate:UITabHostDelegate?
+    public weak var delegate:UITabHostDelegate?
     
     /// Current selected index of tab host
     public var selectedIndex:Int = 0

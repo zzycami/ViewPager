@@ -35,11 +35,13 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     public var contentView:UIScrollView!
     
-    public var delegate:UIViewPagerDelegate?
+    public weak var delegate:UIViewPagerDelegate?
     
-    public var dataSouce:UIViewPagerDataSource?
+    public weak var dataSouce:UIViewPagerDataSource?
     
     public var currentIndex:Int = 0
+    
+    private var previousIndex:Int = 0
     
     private var contentViews:[UIView] = [];
     
@@ -78,6 +80,18 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
         tabHostsContainer.layoutSubviews();
         contentView.frame = CGRectMake(0, tabHostsContainer.frame.height, bounds.width, bounds.height);
         
+        // Layout content views
+        for var i=0;i<contentViews.count;i++ {
+            var view = contentViews[i];
+            var frame = bounds;
+            frame.x = i*frame.width;
+            view.frame = frame;
+            view.layoutSubviews();
+        }
+        var width = contentViews.count*contentView.bounds.width;
+        var height = contentView.bounds.height;
+        contentView.contentSize = CGSizeMake(width, height);
+        contentView.setContentOffset(CGPointMake(bounds.width*self.currentIndex, 0), animated: true);
     }
     
     public func reloadData() {
@@ -98,8 +112,8 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
             for i in 0...capacity - 1 {
                 var controller = ds.controller(self, index: i);
                 var view = controller.view;
-                var frame = view.frame;
-                frame.x = i*contentView.bounds.width;
+                var frame = bounds;
+                frame.x = i*frame.width;
                 view.frame = frame;
                 contentViews.append(view);
                 contentView.addSubview(view);
@@ -144,7 +158,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
         if currentIndex != index {
             currentIndex = index;
             UIView.animateWithDuration(0.2, animations: { () -> Void in
-                var point = contentViews[index].bounds.origin;
+                var point = contentViews[index].frame.origin;
                 self.contentView.contentOffset = point;
             });
             
@@ -157,6 +171,26 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     //MARK:UIScrollViewDelegate
     public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if scrollView == contentView {
+            previousIndex = currentIndex;
+            var nearestIndex = Int(targetContentOffset.memory.x/scrollView.bounds.width + 0.5);
+            nearestIndex = max(min(nearestIndex, contentViews.count - 1), 0);
+            delegate?.willMove?(self, fromIndex: previousIndex, toIndex: nearestIndex);
+            currentIndex = nearestIndex;
+        }
+    }
+    
+    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView == contentView {
+            if let ds = self.dataSouce {
+                var capacity = ds.numberOfItems(self);
+                if currentIndex >= 0 && currentIndex < capacity {
+                    delegate?.didMove?(self, fromIndex: previousIndex, toIndex: currentIndex);
+                    tabHostsContainer.unselectAllTabHost();
+                    tabHostsContainer.moveToCorrectPointOfScrollView(currentIndex);
+                    tabHostsContainer.setSelected(currentIndex);
+                }
+                contentView.setContentOffset(CGPointMake(bounds.width*self.currentIndex, 0), animated: true);
+            }
         }
     }
 }
