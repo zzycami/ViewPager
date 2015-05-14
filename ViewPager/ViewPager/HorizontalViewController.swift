@@ -1,17 +1,18 @@
 //
-//  ViewController.swift
+//  HorizontalViewController.swift
 //  ViewPager
 //
-//  Created by damingdan on 15/2/12.
+//  Created by damingdan on 15/5/14.
 //  Copyright (c) 2015年 kuteng. All rights reserved.
 //
 
 import UIKit
 import UIViewPager
 
-class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelegate {
+class HorizontalViewController: UIViewController, UIHorizontalLayoutDataSource {
+
+    @IBOutlet weak var horizontalLayout: UIHorizontalLayout!
     
-    @IBOutlet weak var viewPager: UIViewPager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +25,9 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
         addChildViewController(viewController2);
         addChildViewController(viewController3);
         
-        self.viewPager.dataSource = self;
-        self.viewPager.delegate = self;
-        self.viewPager.reloadData();
+        
+        horizontalLayout.dataSource = self
+        horizontalLayout.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,21 +35,23 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
         // Dispose of any resources that can be recreated.
     }
     
-    func numberOfItems(viewPager: UIViewPager) -> Int {
-        return self.childViewControllers.count;
+    func numberOfControllers(layout: UIHorizontalLayout) -> Int {
+        return self.childViewControllers.count
     }
     
-    func controller(viewPager: UIViewPager, index: Int) -> UIViewController {
+    func controller(layout: UIHorizontalLayout, index: Int) -> UIViewController {
         return self.childViewControllers[index] as! UIViewController;
     }
     
-    func titleForItem(viewPager: UIViewPager, index: Int) -> String {
-        if let viewController = self.childViewControllers[index] as? UIViewController {
-            if let title = viewController.title {
-                return title;
-            }
-        }
-        return "";
-    }
-}
 
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}

@@ -37,7 +37,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     public weak var delegate:UIViewPagerDelegate?
     
-    public weak var dataSouce:UIViewPagerDataSource?
+    public weak var dataSource:UIViewPagerDataSource?
     
     public var currentIndex:Int = 0
     
@@ -106,7 +106,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     }
     
     func createPages() {
-        if let ds = self.dataSouce {
+        if let ds = self.dataSource {
             var capacity = ds.numberOfItems(self);
             contentViews = [];
             for i in 0...capacity - 1 {
@@ -127,7 +127,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     //MARK: UITabHostsContainerDataSource
     public func numberOfTabHostsWithContainer(container: UITabHostsContainer) -> Int {
         if container == tabHostsContainer {
-            if let ds = self.dataSouce {
+            if let ds = self.dataSource {
                 return ds.numberOfItems(self);
             }else {
                 return 0;
@@ -139,7 +139,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     public func titleAtIndex(index: Int, container: UITabHostsContainer) -> String? {
         if container == tabHostsContainer {
-            return self.dataSouce?.titleForItem?(self, index: index);
+            return self.dataSource?.titleForItem?(self, index: index);
         }else {
             return "";
         }
@@ -147,7 +147,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     public func viewAtIndex(index: Int, container: UITabHostsContainer) -> UIView? {
         if container == tabHostsContainer {
-            return dataSouce?.tabHostView?(self, index: index);
+            return dataSource?.tabHostView?(self, index: index);
         }else {
             return nil;
         }
@@ -158,12 +158,13 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
         if currentIndex != index {
             currentIndex = index;
             UIView.animateWithDuration(0.2, animations: { () -> Void in
-                var point = contentViews[index].frame.origin;
+                var point = self.contentViews[index].frame.origin;
                 self.contentView.contentOffset = point;
             });
             
             if let delegate = self.delegate {
                 delegate.tabHostClicked?(self, index: index);
+                delegate.didMove?(self, fromIndex: previousIndex, toIndex: currentIndex);
             }
         }
     }
@@ -181,7 +182,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == contentView {
-            if let ds = self.dataSouce {
+            if let ds = self.dataSource {
                 var capacity = ds.numberOfItems(self);
                 if currentIndex >= 0 && currentIndex < capacity {
                     delegate?.didMove?(self, fromIndex: previousIndex, toIndex: currentIndex);

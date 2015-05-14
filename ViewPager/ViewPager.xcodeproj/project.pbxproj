@@ -22,6 +22,8 @@
 		51AF79601A8DDCDB00358BE9 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AF795E1A8DDCDB00358BE9 /* Extension.swift */; };
 		51AF79631A8DDCEA00358BE9 /* UITabHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AF79611A8DDCEA00358BE9 /* UITabHost.swift */; };
 		51AF79641A8DDCEA00358BE9 /* UIViewPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AF79621A8DDCEA00358BE9 /* UIViewPager.swift */; };
+		51FAEB111B0437C000A894B3 /* UIHorizontalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FAEB101B0437C000A894B3 /* UIHorizontalLayout.swift */; };
+		51FAEB351B04465F00A894B3 /* HorizontalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FAEB341B04465F00A894B3 /* HorizontalViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +92,8 @@
 		51AF795E1A8DDCDB00358BE9 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		51AF79611A8DDCEA00358BE9 /* UITabHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITabHost.swift; sourceTree = "<group>"; };
 		51AF79621A8DDCEA00358BE9 /* UIViewPager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewPager.swift; sourceTree = "<group>"; };
+		51FAEB101B0437C000A894B3 /* UIHorizontalLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHorizontalLayout.swift; sourceTree = "<group>"; };
+		51FAEB341B04465F00A894B3 /* HorizontalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +157,7 @@
 			children = (
 				515A7C0C1A8CAAF200CE5ED9 /* AppDelegate.swift */,
 				515A7C0E1A8CAAF200CE5ED9 /* ViewController.swift */,
+				51FAEB341B04465F00A894B3 /* HorizontalViewController.swift */,
 				515A7C101A8CAAF200CE5ED9 /* Main.storyboard */,
 				515A7C131A8CAAF200CE5ED9 /* Images.xcassets */,
 				515A7C151A8CAAF200CE5ED9 /* LaunchScreen.xib */,
@@ -194,6 +199,7 @@
 				51AF795D1A8DDCDB00358BE9 /* Calculation.swift */,
 				51AF795E1A8DDCDB00358BE9 /* Extension.swift */,
 				51AF79411A8DDCC000358BE9 /* UIViewPager.h */,
+				51FAEB101B0437C000A894B3 /* UIHorizontalLayout.swift */,
 				51AF793F1A8DDCC000358BE9 /* Supporting Files */,
 			);
 			path = UIViewPager;
@@ -399,6 +405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				515A7C0F1A8CAAF200CE5ED9 /* ViewController.swift in Sources */,
+				51FAEB351B04465F00A894B3 /* HorizontalViewController.swift in Sources */,
 				515A7C0D1A8CAAF200CE5ED9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,6 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51AF79641A8DDCEA00358BE9 /* UIViewPager.swift in Sources */,
+				51FAEB111B0437C000A894B3 /* UIHorizontalLayout.swift in Sources */,
 				51AF795F1A8DDCDB00358BE9 /* Calculation.swift in Sources */,
 				51AF79631A8DDCEA00358BE9 /* UITabHost.swift in Sources */,
 				51AF79601A8DDCDB00358BE9 /* Extension.swift in Sources */,
@@ -510,7 +518,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -547,7 +555,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -591,6 +599,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = ViewPagerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ViewPager.app/ViewPager";
@@ -606,6 +615,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = ViewPagerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ViewPager.app/ViewPager";
@@ -671,6 +681,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = UIViewPagerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ViewPager.app/ViewPager";
@@ -685,6 +696,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = UIViewPagerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ViewPager.app/ViewPager";
@@ -728,6 +740,7 @@
 				51AF79571A8DDCC000358BE9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		51AF795C1A8DDCC000358BE9 /* Build configuration list for PBXNativeTarget "UIViewPagerTests" */ = {
 			isa = XCConfigurationList;
@@ -736,6 +749,7 @@
 				51AF79591A8DDCC000358BE9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
