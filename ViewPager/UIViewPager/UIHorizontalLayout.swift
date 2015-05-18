@@ -73,6 +73,9 @@ public class UIHorizontalLayout: UIView {
     func createPages() {
         if let ds = self.dataSource {
             var capacity = ds.numberOfControllers(self);
+            if capacity <= 0 {
+                return
+            }
             contentViews = [];
             for i in 0...capacity - 1 {
                 var controller = ds.controller(self, index: i)
