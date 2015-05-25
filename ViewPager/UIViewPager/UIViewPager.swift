@@ -79,11 +79,11 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
         tabHostsContainer.frame = CGRectMake(0, 0, bounds.width, 44);
         tabHostsContainer.layoutSubviews();
         contentView.frame = CGRectMake(0, tabHostsContainer.frame.height, bounds.width, bounds.height);
-        
+        var contentFrame = CGRectMake(0, 0, bounds.width, bounds.height - tabHostsContainer.frame.height)
         // Layout content views
         for var i=0;i<contentViews.count;i++ {
             var view = contentViews[i];
-            var frame = bounds;
+            var frame = contentFrame;
             frame.x = i*frame.width;
             view.frame = frame;
             view.layoutSubviews();
@@ -107,12 +107,13 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     func createPages() {
         if let ds = self.dataSource {
+            var contentFrame = CGRectMake(0, 0, bounds.width, bounds.height - tabHostsContainer.frame.height)
             var capacity = ds.numberOfItems(self);
             contentViews = [];
             for i in 0...capacity - 1 {
                 var controller = ds.controller(self, index: i);
                 var view = controller.view;
-                var frame = bounds;
+                var frame = contentFrame;
                 frame.x = i*frame.width;
                 view.frame = frame;
                 contentViews.append(view);
