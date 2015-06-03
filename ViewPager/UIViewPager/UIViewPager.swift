@@ -154,6 +154,26 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
         }
     }
     
+    public func selectPage(index:Int, animated:Bool) {
+        var count = self.dataSource?.numberOfItems(self)
+        if index < 0 || index > count {
+            return;
+        }
+        currentIndex = index;
+        tabHostsContainer.unselectAllTabHost();
+        tabHostsContainer.moveToCorrectPointOfScrollView(index);
+        tabHostsContainer.setSelected(index);
+        if animated {
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                var point = self.contentViews[index].frame.origin;
+                self.contentView.contentOffset = point;
+            });
+        }else {
+            var point = self.contentViews[index].frame.origin;
+            self.contentView.contentOffset = point;
+        }
+    }
+    
     //MARK:UITabHostsDelegate
     public func didSelectTabHost(index: Int, container: UITabHostsContainer) {
         if currentIndex != index {

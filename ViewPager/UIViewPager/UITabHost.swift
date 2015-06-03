@@ -249,8 +249,10 @@ public class UITabHostsContainer: UIView {
     func createTabs() {
         if let dataSource = self.dataSource {
             var capacity = dataSource.numberOfTabHostsWithContainer(self);
-            for i:Int in 0...capacity-1 {
-                createView(i, capacity: capacity);
+            if capacity > 0 {
+                for i:Int in 0..<capacity {
+                    createView(i, capacity: capacity);
+                }
             }
         }
         adjustScrolView();
