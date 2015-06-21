@@ -26,6 +26,7 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
         
         self.viewPager.dataSource = self;
         self.viewPager.delegate = self;
+        self.viewPager.style = UIViewPagerStyle.Normal
         self.viewPager.reloadData();
     }
 

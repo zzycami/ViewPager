@@ -8,6 +8,12 @@
 
 import UIKit
 
+@objc
+public enum UIViewPagerStyle:Int {
+    case TabHost
+    case Normal
+}
+
 /**
 *  This View Pager use the UIViewController as the child view. You can use add child UIViewController to add the subviews
 */
@@ -31,7 +37,7 @@ import UIKit
 
 public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScrollViewDelegate {
     /// Default tabHostsContaner, It's on the top of viewpager and default height is 44. you can custom the tab host container
-    public var tabHostsContainer:UITabHostsContainer!
+    public var tabHostsContainer:UITabHostsContainer?
     
     public var contentView:UIScrollView!
     
@@ -39,11 +45,24 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     public weak var dataSource:UIViewPagerDataSource?
     
+    public var style:UIViewPagerStyle = UIViewPagerStyle.TabHost {
+        didSet {
+            if self.style == UIViewPagerStyle.Normal {
+                self.tabHostsContainer = nil
+                self.tabHostsHeight = 0
+            }else if self.style == UIViewPagerStyle.TabHost {
+                setupTabHostContainer()
+            }
+        }
+    }
+    
     public var currentIndex:Int = 0
     
     private var previousIndex:Int = 0
     
     private var contentViews:[UIView] = [];
+    
+    internal(set) var tabHostsHeight:CGFloat = 0
     
     
     public required init(coder aDecoder: NSCoder) {
@@ -56,16 +75,23 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
         setupViewPager();
     }
     
-    func setupViewPager() {
+    private func setupTabHostContainer() {
+        tabHostsHeight = 44
         if tabHostsContainer == nil {
-            tabHostsContainer = UITabHostsContainer(frame: CGRectMake(0, 0, bounds.width, 44));
+            tabHostsContainer = UITabHostsContainer(frame: CGRectMake(0, 0, bounds.width, tabHostsHeight));
         }
-        tabHostsContainer.dataSource = self;
-        tabHostsContainer.delegate = self;
-        addSubview(tabHostsContainer);
+        tabHostsContainer!.dataSource = self;
+        tabHostsContainer!.delegate = self;
+        addSubview(tabHostsContainer!);
+    }
+    
+    func setupViewPager() {
+        if style == UIViewPagerStyle.TabHost {
+            setupTabHostContainer()
+        }
         
         // Cretae content view
-        contentView = UIScrollView(frame: CGRectMake(0, tabHostsContainer.frame.height, bounds.width, bounds.height));
+        contentView = UIScrollView(frame: CGRectMake(0, tabHostsHeight, bounds.width, bounds.height));
         contentView.backgroundColor = UIColor.clearColor();
         contentView.showsHorizontalScrollIndicator = false;
         contentView.bounces = false;
@@ -76,10 +102,12 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     }
     
     public override func layoutSubviews() {
-        tabHostsContainer.frame = CGRectMake(0, 0, bounds.width, 44);
-        tabHostsContainer.layoutSubviews();
-        contentView.frame = CGRectMake(0, tabHostsContainer.frame.height, bounds.width, bounds.height);
-        var contentFrame = CGRectMake(0, 0, bounds.width, bounds.height - tabHostsContainer.frame.height)
+        if let tabHostsContainer = self.tabHostsContainer {
+            tabHostsContainer.frame = CGRectMake(0, 0, bounds.width, 44);
+            tabHostsContainer.layoutSubviews();
+        }
+        contentView.frame = CGRectMake(0, tabHostsHeight, bounds.width, bounds.height);
+        var contentFrame = CGRectMake(0, 0, bounds.width, bounds.height - tabHostsHeight)
         // Layout content views
         for var i=0;i<contentViews.count;i++ {
             var view = contentViews[i];
@@ -96,8 +124,10 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     public func reloadData() {
         currentIndex = 0;
-        tabHostsContainer.reloadData();
-        tabHostsContainer.setSelected(currentIndex);
+        if let tabHostsContainer = self.tabHostsContainer {
+            tabHostsContainer.reloadData();
+            tabHostsContainer.setSelected(currentIndex);
+        }
         // Remove all subviews
         for view in contentView.subviews {
             view.removeFromSuperview();
@@ -107,7 +137,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     
     func createPages() {
         if let ds = self.dataSource {
-            var contentFrame = CGRectMake(0, 0, bounds.width, bounds.height - tabHostsContainer.frame.height)
+            var contentFrame = CGRectMake(0, 0, bounds.width, bounds.height - tabHostsHeight)
             var capacity = ds.numberOfItems(self);
             contentViews = [];
             for i in 0...capacity - 1 {
@@ -160,9 +190,12 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
             return;
         }
         currentIndex = index;
-        tabHostsContainer.unselectAllTabHost();
-        tabHostsContainer.moveToCorrectPointOfScrollView(index);
-        tabHostsContainer.setSelected(index);
+        
+        if let tabHostsContainer = self.tabHostsContainer {
+            tabHostsContainer.unselectAllTabHost();
+            tabHostsContainer.moveToCorrectPointOfScrollView(index);
+            tabHostsContainer.setSelected(index);
+        }
         if animated {
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 var point = self.contentViews[index].frame.origin;
@@ -207,9 +240,11 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
                 var capacity = ds.numberOfItems(self);
                 if currentIndex >= 0 && currentIndex < capacity {
                     delegate?.didMove?(self, fromIndex: previousIndex, toIndex: currentIndex);
-                    tabHostsContainer.unselectAllTabHost();
-                    tabHostsContainer.moveToCorrectPointOfScrollView(currentIndex);
-                    tabHostsContainer.setSelected(currentIndex);
+                    if let tabHostsContainer = self.tabHostsContainer {
+                        tabHostsContainer.unselectAllTabHost();
+                        tabHostsContainer.moveToCorrectPointOfScrollView(currentIndex);
+                        tabHostsContainer.setSelected(currentIndex);
+                    }
                 }
                 contentView.setContentOffset(CGPointMake(bounds.width*self.currentIndex, 0), animated: true);
             }
