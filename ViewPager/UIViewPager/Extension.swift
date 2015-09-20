@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 extension UIDevice {
     public class func systemVersionFloatValue()->Float {
         return (UIDevice.currentDevice().systemVersion as NSString).floatValue;
@@ -148,10 +150,14 @@ extension UIScrollView {
 
 extension UIColor {
     class func colorWithRGB(value:Int)->UIColor {
-        var redValue = CGFloat(value & 0xFF0000 >> 16)/255.0;
-        var greenValue = CGFloat(value & 0x00FF00 >> 8)/255.0;
+        return self.colorWithRGB(value, alpha: 1)
+    }
+    
+    class func colorWithRGB(value:Int, alpha:CGFloat)->UIColor {
+        var redValue = CGFloat((value & 0xFF0000) >> 16)/255.0;
+        var greenValue = CGFloat((value & 0x00FF00) >> 8)/255.0;
         var blueValue = CGFloat(value & 0x0000FF)/255.0;
-        return UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: 1);
+        return UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: alpha);
     }
 }
 
