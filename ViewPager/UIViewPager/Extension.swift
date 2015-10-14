@@ -49,17 +49,17 @@ extension UIViewController {
     /**
     When the keyboard show, make the view shit so that the responder text field can be seen. IOS7 and IOS8 have some diffirent in rect of the views at diffirent orientation.
     
-    :param: notification
+    - parameter notification:
     */
     func keyboardWillShow(notification:NSNotification) {
-        var firstResponder = self.view.findFirstResponderView();
+        let firstResponder = self.view.findFirstResponderView();
         if firstResponder == nil {
             return;
         }
         if !firstResponder!.isKindOfClass(UITextField.classForCoder()) {
             return;
         }
-        var window = UIApplication.sharedApplication().keyWindow;
+        let window = UIApplication.sharedApplication().keyWindow;
         if window == nil {
             return;
         }
@@ -67,15 +67,15 @@ extension UIViewController {
         var responderFrame = window?.convertRect(firstResponder!.frame, fromView: firstResponder?.superview);
         
         var userInfo = notification.userInfo;
-        var value: NSValue = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue;
+        let value: NSValue = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue;
         var keyboardRect = value.CGRectValue();
-        var animationDurationValue: NSValue = userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSValue;
+        let animationDurationValue: NSValue = userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSValue;
         var animationDuration:NSTimeInterval = 0;
         animationDurationValue.getValue(&animationDuration);
         
         
-        var width = window!.frame.width;
-        var height = window!.frame.height;
+        let width = window!.frame.width;
+        let height = window!.frame.height;
         var x:CGFloat = 0;
         var y:CGFloat = 0;
         
@@ -85,7 +85,7 @@ extension UIViewController {
             x = x > 0 ?0:x;
             y = y > 0 ?0:y;
         }else {
-            var orientation = UIApplication.sharedApplication().statusBarOrientation;
+            let orientation = UIApplication.sharedApplication().statusBarOrientation;
             if orientation == UIInterfaceOrientation.PortraitUpsideDown {
                 x = 0;
                 y = responderFrame!.y - keyboardRect.height;
@@ -101,7 +101,7 @@ extension UIViewController {
             }
         }
         
-        var rect = CGRectMake(x, y, width, height);
+        let rect = CGRectMake(x, y, width, height);
         view.layoutIfNeeded();
         
         UIView.animateWithDuration(animationDuration, animations: { () -> Void in
@@ -112,15 +112,15 @@ extension UIViewController {
     /**
     Reset the view controller's view
     
-    :param: notification
+    - parameter notification:
     */
     func keyboardWillHide(notification:NSNotification) {
-        var window = UIApplication.sharedApplication().keyWindow;
+        let window = UIApplication.sharedApplication().keyWindow;
         if window == nil {
             return;
         }
         var userInfo = notification.userInfo!;
-        var animationDurationValue:NSValue = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSValue;
+        let animationDurationValue:NSValue = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSValue;
         var animationDuration:NSTimeInterval = 0;
         animationDurationValue.getValue(&animationDuration);
         UIView.animateWithDuration(animationDuration, animations: { () -> Void in
@@ -135,7 +135,7 @@ extension UIScrollView {
     }
     
     func keyboardWillShow(notification:NSNotification) {
-        var firstResponder = self.findFirstResponderView();
+        let firstResponder = self.findFirstResponderView();
         if firstResponder == nil {
             return;
         }
@@ -143,7 +143,7 @@ extension UIScrollView {
             return;
         }
         
-        var respnderFrame = self.convertRect(firstResponder!.frame, fromView: firstResponder!.superview);
+        let respnderFrame = self.convertRect(firstResponder!.frame, fromView: firstResponder!.superview);
         self.scrollRectToVisible(respnderFrame, animated: true);
     }
 }
@@ -154,9 +154,9 @@ extension UIColor {
     }
     
     class func colorWithRGB(value:Int, alpha:CGFloat)->UIColor {
-        var redValue = CGFloat((value & 0xFF0000) >> 16)/255.0;
-        var greenValue = CGFloat((value & 0x00FF00) >> 8)/255.0;
-        var blueValue = CGFloat(value & 0x0000FF)/255.0;
+        let redValue = CGFloat((value & 0xFF0000) >> 16)/255.0;
+        let greenValue = CGFloat((value & 0x00FF00) >> 8)/255.0;
+        let blueValue = CGFloat(value & 0x0000FF)/255.0;
         return UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: alpha);
     }
 }
@@ -165,7 +165,7 @@ extension UIView {
     /**
     Find the first responder sub view
     
-    :returns: the first responder view.
+    - returns: the first responder view.
     */
     public func findFirstResponderView()->UIView? {
         if self.isFirstResponder() {
@@ -173,7 +173,7 @@ extension UIView {
         }
         
         for subView in self.subviews {
-            var view = subView.findFirstResponderView();
+            let view = subView.findFirstResponderView();
             if view != nil {
                 return view;
             }

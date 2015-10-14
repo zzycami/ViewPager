@@ -324,6 +324,7 @@
 		515A7BFF1A8CAAF100CE5ED9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = kuteng;
 				TargetAttributes = {
@@ -336,7 +337,6 @@
 					};
 					51AF793C1A8DDCC000358BE9 = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = 8SWVUHC49K;
 					};
 					51AF79461A8DDCC000358BE9 = {
 						CreatedOnToolsVersion = 6.3;
