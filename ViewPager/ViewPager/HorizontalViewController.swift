@@ -18,12 +18,12 @@ class HorizontalViewController: UIViewController, UIHorizontalLayoutDataSource {
         super.viewDidLoad()
         
         // Add child view controller
-        var viewController1 = storyboard?.instantiateViewControllerWithIdentifier("ViewController1") as! UIViewController;
-        var viewController2 = storyboard?.instantiateViewControllerWithIdentifier("ViewController2") as! UIViewController;
-        var viewController3 = storyboard?.instantiateViewControllerWithIdentifier("ViewController3") as! UIViewController;
-        addChildViewController(viewController1);
-        addChildViewController(viewController2);
-        addChildViewController(viewController3);
+        let viewController1 = storyboard?.instantiateViewControllerWithIdentifier("ViewController1");
+        let viewController2 = storyboard?.instantiateViewControllerWithIdentifier("ViewController2");
+        let viewController3 = storyboard?.instantiateViewControllerWithIdentifier("ViewController3");
+        addChildViewController(viewController1!);
+        addChildViewController(viewController2!);
+        addChildViewController(viewController3!);
         
         
         horizontalLayout.dataSource = self
@@ -40,7 +40,7 @@ class HorizontalViewController: UIViewController, UIHorizontalLayoutDataSource {
     }
     
     func controller(layout: UIHorizontalLayout, index: Int) -> UIViewController {
-        return self.childViewControllers[index] as! UIViewController;
+        return self.childViewControllers[index];
     }
     
 

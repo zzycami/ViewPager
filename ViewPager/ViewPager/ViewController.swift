@@ -17,12 +17,12 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
         super.viewDidLoad()
         
         // Add child view controller
-        var viewController1 = storyboard?.instantiateViewControllerWithIdentifier("ViewController1") as! UIViewController;
-        var viewController2 = storyboard?.instantiateViewControllerWithIdentifier("ViewController2") as! UIViewController;
-        var viewController3 = storyboard?.instantiateViewControllerWithIdentifier("ViewController3") as! UIViewController;
-        addChildViewController(viewController1);
-        addChildViewController(viewController2);
-        addChildViewController(viewController3);
+        let viewController1 = storyboard?.instantiateViewControllerWithIdentifier("ViewController1");
+        let viewController2 = storyboard?.instantiateViewControllerWithIdentifier("ViewController2");
+        let viewController3 = storyboard?.instantiateViewControllerWithIdentifier("ViewController3");
+        addChildViewController(viewController1!);
+        addChildViewController(viewController2!);
+        addChildViewController(viewController3!);
         
         self.viewPager.dataSource = self;
         self.viewPager.delegate = self;
@@ -40,14 +40,13 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
     }
     
     func controller(viewPager: UIViewPager, index: Int) -> UIViewController {
-        return self.childViewControllers[index] as! UIViewController;
+        return self.childViewControllers[index];
     }
     
     func titleForItem(viewPager: UIViewPager, index: Int) -> String {
-        if let viewController = self.childViewControllers[index] as? UIViewController {
-            if let title = viewController.title {
-                return title;
-            }
+        let viewController = self.childViewControllers[index]
+        if let title = viewController.title {
+            return title;
         }
         return "";
     }

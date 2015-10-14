@@ -76,7 +76,7 @@ public class UITabHost: UIView {
     /**
     Calculate and set the label's frame. set label' title is fit it's size
     
-    :param: label
+    - parameter label:
     */
     func adjustLabel(label:UILabel) {
         var size = label.sizeThatFits(bounds.size);
@@ -114,7 +114,7 @@ public class UITabHost: UIView {
     public var onClick:OnClickCallBack?
     
     //MARK: Initials
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder);
         setupTabHost();
     }
@@ -162,7 +162,7 @@ public class UITabHost: UIView {
     }
     
     //MARK: Actions
-    public override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let onClick = self.onClick {
             onClick(tabHost: self);
         }
@@ -200,7 +200,7 @@ public class UITabHostsContainer: UIView {
     // Cash for tab hosts
     private var tabArray:[UITabHost] = []
     
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder);
         setupTabHostsContainer();
     }
@@ -227,8 +227,8 @@ public class UITabHostsContainer: UIView {
         adjustScrolView();
         
         for var i=0; i<tabArray.count; i++ {
-            var tabHost = tabArray[i];
-            var width = tabHostWidthWithCapacity(tabArray.count);
+            let tabHost = tabArray[i];
+            let width = tabHostWidthWithCapacity(tabArray.count);
             tabHost.frame = CGRectMake(width*i, 0, width, scrollView.frame.height);
             tabHost.layoutSubviews();
         }
@@ -248,7 +248,7 @@ public class UITabHostsContainer: UIView {
     
     func createTabs() {
         if let dataSource = self.dataSource {
-            var capacity = dataSource.numberOfTabHostsWithContainer(self);
+            let capacity = dataSource.numberOfTabHostsWithContainer(self);
             if capacity > 0 {
                 for i:Int in 0..<capacity {
                     createView(i, capacity: capacity);
@@ -262,8 +262,8 @@ public class UITabHostsContainer: UIView {
     }
     
     func adjustScrolView() {
-        var width = self.tabHostWidthWithCapacity(tabArray.count) * tabArray.count;
-        var height = scrollView.frame.height;
+        let width = self.tabHostWidthWithCapacity(tabArray.count) * tabArray.count;
+        let height = scrollView.frame.height;
         scrollView.contentSize = CGSizeMake(width, height);
         scrollView.frame = self.bounds;
     }
@@ -314,8 +314,8 @@ public class UITabHostsContainer: UIView {
     }
     
     func createTabHostWithTitle(title:String, index:Int, capacity:Int)->UITabHost {
-        var width = tabHostWidthWithCapacity(capacity);
-        var tabHost = UITabHost(frame: CGRectMake(width*index, 0, width, self.frame.height));
+        let width = tabHostWidthWithCapacity(capacity);
+        let tabHost = UITabHost(frame: CGRectMake(width*index, 0, width, self.frame.height));
         if let title = dataSource?.titleAtIndex?(index, container: self) {
             tabHost.title = title;
         }
@@ -324,8 +324,8 @@ public class UITabHostsContainer: UIView {
     }
     
     func createTabHostWithView(view:UIView, index:Int, capacity:Int)->UITabHost {
-        var width = tabHostWidthWithCapacity(capacity);
-        var tabHost = UITabHost(frame: CGRectMake(width*index, 0, width, self.frame.height));
+        let width = tabHostWidthWithCapacity(capacity);
+        let tabHost = UITabHost(frame: CGRectMake(width*index, 0, width, self.frame.height));
         if let view = self.dataSource?.viewAtIndex?(index, container: self)  {
             tabHost.contentView = view;
         }
@@ -335,8 +335,8 @@ public class UITabHostsContainer: UIView {
     /**
     Apply the delegate's appearance setting
     
-    :param: tabHost the UITabHost to be setting
-    :param: index the index of UITabHost
+    - parameter tabHost: the UITabHost to be setting
+    - parameter index: the index of UITabHost
     */
     func customizeTabHost(tabHost:UITabHost, index:Int) {
         if let delegate = self.delegate {
@@ -365,9 +365,9 @@ public class UITabHostsContainer: UIView {
     /**
     Calculate the tab host width, the max count is 3.
     
-    :param: capacity tab host count
+    - parameter capacity: tab host count
     
-    :returns: single tab host's width
+    - returns: single tab host's width
     */
     func tabHostWidthWithCapacity(capacity:Int)->CGFloat {
         switch(capacity) {

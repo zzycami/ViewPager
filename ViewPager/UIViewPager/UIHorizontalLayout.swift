@@ -25,7 +25,7 @@ public class UIHorizontalLayout: UIView {
     
     public var singleWidth:CGFloat = 400
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupHorizontalLayout()
     }
@@ -58,28 +58,28 @@ public class UIHorizontalLayout: UIView {
     public override func layoutSubviews() {
         // Layout content views
         for var i=0;i<contentViews.count;i++ {
-            var view = contentViews[i]
+            let view = contentViews[i]
             var frame = bounds
             frame.size.width = self.singleWidth
             frame.x = i*self.singleWidth
             view.frame = frame
             view.layoutSubviews()
         }
-        var width = contentViews.count*self.singleWidth
-        var height = contentView.bounds.height
+        let width = contentViews.count*self.singleWidth
+        let height = contentView.bounds.height
         contentView.contentSize = CGSizeMake(width, height)
     }
     
     func createPages() {
         if let ds = self.dataSource {
-            var capacity = ds.numberOfControllers(self);
+            let capacity = ds.numberOfControllers(self);
             if capacity <= 0 {
                 return
             }
             contentViews = [];
             for i in 0...capacity - 1 {
-                var controller = ds.controller(self, index: i)
-                var view = controller.view
+                let controller = ds.controller(self, index: i)
+                let view = controller.view
                 var frame = bounds
                 frame.size.width = self.singleWidth
                 frame.x = i*self.singleWidth
@@ -87,8 +87,8 @@ public class UIHorizontalLayout: UIView {
                 contentViews.append(view)
                 contentView.addSubview(view)
             }
-            var width = contentViews.count*self.singleWidth
-            var height = contentView.bounds.height
+            let width = contentViews.count*self.singleWidth
+            let height = contentView.bounds.height
             contentView.contentSize = CGSizeMake(width, height)
         }
     }
