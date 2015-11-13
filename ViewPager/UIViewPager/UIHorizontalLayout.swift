@@ -25,7 +25,7 @@ public class UIHorizontalLayout: UIView {
     
     public var singleWidth:CGFloat = 400
     
-    public required init?(coder aDecoder: NSCoder) {
+    public required init?;?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupHorizontalLayout()
     }
@@ -33,6 +33,10 @@ public class UIHorizontalLayout: UIView {
     override public init(frame: CGRect) {
         super.init(frame: frame)
         setupHorizontalLayout()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupHorizontalLayout() {

@@ -114,7 +114,7 @@ public class UITabHost: UIView {
     public var onClick:OnClickCallBack?
     
     //MARK: Initials
-    required public init?(coder aDecoder: NSCoder) {
+    required public init?;?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder);
         setupTabHost();
     }
@@ -122,6 +122,10 @@ public class UITabHost: UIView {
     override public init(frame: CGRect) {
         super.init(frame: frame);
         setupTabHost();
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupTabHost() {
@@ -200,7 +204,7 @@ public class UITabHostsContainer: UIView {
     // Cash for tab hosts
     private var tabArray:[UITabHost] = []
     
-    required public init?(coder aDecoder: NSCoder) {
+    required public init?;?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder);
         setupTabHostsContainer();
     }
@@ -208,6 +212,10 @@ public class UITabHostsContainer: UIView {
     override public init(frame: CGRect) {
         super.init(frame: frame);
         setupTabHostsContainer();
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     /**
