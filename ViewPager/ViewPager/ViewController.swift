@@ -20,13 +20,15 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
         let viewController1 = storyboard?.instantiateViewControllerWithIdentifier("ViewController1");
         let viewController2 = storyboard?.instantiateViewControllerWithIdentifier("ViewController2");
         let viewController3 = storyboard?.instantiateViewControllerWithIdentifier("ViewController3");
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         addChildViewController(viewController1!);
         addChildViewController(viewController2!);
         addChildViewController(viewController3!);
         
         self.viewPager.dataSource = self;
         self.viewPager.delegate = self;
-        self.viewPager.style = UIViewPagerStyle.Normal
+        self.viewPager.style = UIViewPagerStyle.TabHost
         self.viewPager.reloadData();
     }
 

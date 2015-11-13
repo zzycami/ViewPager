@@ -65,7 +65,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     internal(set) var tabHostsHeight:CGFloat = 0
     
     
-    public required init?;?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder);
         setupViewPager();
     }
@@ -73,10 +73,6 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     override public init(frame: CGRect) {
         super.init(frame: frame);
         setupViewPager();
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupTabHostContainer() {
