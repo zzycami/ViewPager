@@ -17,9 +17,9 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
         super.viewDidLoad()
         
         // Add child view controller
-        let viewController1 = storyboard?.instantiateViewControllerWithIdentifier("ViewController1");
-        let viewController2 = storyboard?.instantiateViewControllerWithIdentifier("ViewController2");
-        let viewController3 = storyboard?.instantiateViewControllerWithIdentifier("ViewController3");
+        let viewController1 = storyboard?.instantiateViewController(withIdentifier: "ViewController1");
+        let viewController2 = storyboard?.instantiateViewController(withIdentifier: "ViewController2");
+        let viewController3 = storyboard?.instantiateViewController(withIdentifier: "ViewController3");
         self.automaticallyAdjustsScrollViewInsets = false
         
         addChildViewController(viewController1!);
@@ -28,7 +28,7 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
         
         self.viewPager.dataSource = self;
         self.viewPager.delegate = self;
-        self.viewPager.style = UIViewPagerStyle.TabHost
+        self.viewPager.style = UIViewPagerStyle.tabHost
         self.viewPager.reloadData();
     }
 
@@ -37,15 +37,15 @@ class ViewController: UIViewController, UIViewPagerDataSource, UIViewPagerDelega
         // Dispose of any resources that can be recreated.
     }
     
-    func numberOfItems(viewPager: UIViewPager) -> Int {
+    func numberOfItems(_ viewPager: UIViewPager) -> Int {
         return self.childViewControllers.count;
     }
     
-    func controller(viewPager: UIViewPager, index: Int) -> UIViewController {
+    func controller(_ viewPager: UIViewPager, index: Int) -> UIViewController {
         return self.childViewControllers[index];
     }
     
-    func titleForItem(viewPager: UIViewPager, index: Int) -> String {
+    func titleForItem(_ viewPager: UIViewPager, index: Int) -> String {
         let viewController = self.childViewControllers[index]
         if let title = viewController.title {
             return title;
