@@ -196,13 +196,13 @@ extension NSString {
             }
         }
         
-        if string!.trim().length == 0 {
+        if string!.trim().lengthOfBytes(using: String.Encoding.utf8) == 0 {
             return true;
         }
         return false;
     }
     
-    public func trim()->NSString {
+    public func trim()->String {
         return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines);
     }
 }
