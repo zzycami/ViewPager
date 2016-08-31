@@ -185,7 +185,7 @@ public class UIViewPager: UIView, UITabHostDataSource, UITabHostDelegate, UIScro
     }
     
     public func selectPage(_ index:Int, animated:Bool) {
-        let count = self.dataSource?.numberOfItems(self)
+        let count = self.dataSource?.numberOfItems(self) ?? 0
         if index < 0 || index >= count {
             return;
         }

@@ -10,7 +10,7 @@ import UIKit
 
 let defaultColor = UIColor(white: 0.7725, alpha: 0.75)
 
-public typealias OnClickCallBack = (tabHost:UITabHost)->Void;
+public typealias OnClickCallBack = (_ tabHost:UITabHost)->Void;
 
 public class UITabHost: UIView {
     //MARK: Properties
@@ -164,7 +164,7 @@ public class UITabHost: UIView {
     //MARK: Actions
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let onClick = self.onClick {
-            onClick(tabHost: self);
+            onClick(self);
         }
     }
 }
