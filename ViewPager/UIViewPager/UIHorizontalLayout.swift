@@ -9,9 +9,9 @@
 import UIKit
 
 @objc public protocol UIHorizontalLayoutDataSource:NSObjectProtocol {
-    func numberOfControllers(layout:UIHorizontalLayout)->Int
+    func numberOfControllers(_ layout:UIHorizontalLayout)->Int
     
-    func controller(layout:UIHorizontalLayout, index:Int)->UIViewController
+    func controller(_ layout:UIHorizontalLayout, index:Int)->UIViewController
 }
 
 public class UIHorizontalLayout: UIView {
@@ -21,7 +21,7 @@ public class UIHorizontalLayout: UIView {
     
     private var contentViews:[UIView] = []
     
-    private var containerView:UIView = UIView(frame: CGRectZero)
+    private var containerView:UIView = UIView(frame: CGRect.zero)
     
     public var singleWidth:CGFloat = 400
     
@@ -37,12 +37,12 @@ public class UIHorizontalLayout: UIView {
     
     func setupHorizontalLayout() {
         // Cretae content view
-        contentView = UIScrollView(frame: CGRectMake(0, 0, bounds.width, bounds.height));
-        contentView.backgroundColor = UIColor.clearColor()
+        contentView = UIScrollView(frame: CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height));
+        contentView.backgroundColor = UIColor.clear
         contentView.showsHorizontalScrollIndicator = false
         contentView.showsVerticalScrollIndicator = false
         contentView.bounces = false
-        contentView.pagingEnabled = false
+        contentView.isPagingEnabled = false
         contentView.decelerationRate = UIScrollViewDecelerationRateFast
         addSubview(contentView)
     }
@@ -57,7 +57,7 @@ public class UIHorizontalLayout: UIView {
     
     public override func layoutSubviews() {
         // Layout content views
-        for var i=0;i<contentViews.count;i++ {
+        for i in 0 ..< contentViews.count {
             let view = contentViews[i]
             var frame = bounds
             frame.size.width = self.singleWidth
@@ -67,7 +67,7 @@ public class UIHorizontalLayout: UIView {
         }
         let width = contentViews.count*self.singleWidth
         let height = contentView.bounds.height
-        contentView.contentSize = CGSizeMake(width, height)
+        contentView.contentSize = CGSize(width: width, height: height)
     }
     
     func createPages() {
@@ -83,13 +83,13 @@ public class UIHorizontalLayout: UIView {
                 var frame = bounds
                 frame.size.width = self.singleWidth
                 frame.x = i*self.singleWidth
-                view.frame = frame
-                contentViews.append(view)
-                contentView.addSubview(view)
+                view?.frame = frame
+                contentViews.append(view!)
+                contentView.addSubview(view!)
             }
             let width = contentViews.count*self.singleWidth
             let height = contentView.bounds.height
-            contentView.contentSize = CGSizeMake(width, height)
+            contentView.contentSize = CGSize(width: width, height: height)
         }
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 let defaultColor = UIColor(white: 0.7725, alpha: 0.75)
 
-public typealias OnClickCallBack = (tabHost:UITabHost)->Void;
+public typealias OnClickCallBack = (_ tabHost:UITabHost)->Void;
 
 public class UITabHost: UIView {
     //MARK: Properties
@@ -33,7 +33,7 @@ public class UITabHost: UIView {
     }
     
     /// text's font
-    public var titleFont:UIFont = UIFont.systemFontOfSize(14) {
+    public var titleFont:UIFont = UIFont.systemFont(ofSize: 14) {
         didSet {
             if let label = contentView as? UILabel {
                 label.font = titleFont;
@@ -56,7 +56,7 @@ public class UITabHost: UIView {
         set {
             if contentView == nil {
                 contentView = UILabel();
-                contentView!.backgroundColor = UIColor.clearColor();
+                contentView!.backgroundColor = UIColor.clear;
             }
             if let label = contentView as? UILabel {
                 label.text = newValue;
@@ -78,7 +78,7 @@ public class UITabHost: UIView {
     
     - parameter label:
     */
-    func adjustLabel(label:UILabel) {
+    func adjustLabel(_ label:UILabel) {
         var size = label.sizeThatFits(bounds.size);
         if size.width > frame.width {
             size.width = frame.width;
@@ -86,9 +86,9 @@ public class UITabHost: UIView {
         var titleFrame = label.frame;
         titleFrame.size = size;
         label.frame = titleFrame;
-        label.textAlignment = NSTextAlignment.Center;
+        label.textAlignment = NSTextAlignment.center;
         label.adjustsFontSizeToFitWidth = true;
-        label.center = CGPointMake(bounds.width/2, bounds.height/2);
+        label.center = CGPoint(x: bounds.width/2, y: bounds.height/2);
     }
     
     public override func layoutSubviews() {
@@ -106,7 +106,7 @@ public class UITabHost: UIView {
             }
             if let view = contentView {
                 addSubview(view);
-                bringSubviewToFront(view);
+                bringSubview(toFront: view);
             }
         }
     }
@@ -125,11 +125,11 @@ public class UITabHost: UIView {
     }
     
     private func setupTabHost() {
-        backgroundColor = UIColor.clearColor();
+        backgroundColor = UIColor.clear;
     }
     
     //MARK: Draws
-    override public func drawRect(rect: CGRect) {
+    override public func draw(_ rect: CGRect) {
         drawTopLine(UIBezierPath(), rect: rect);
         drawBottomLine(UIBezierPath(), rect: rect);
         if isSelected() {
@@ -137,53 +137,53 @@ public class UITabHost: UIView {
         }
     }
     
-    private func drawTopLine(bezierPath:UIBezierPath, rect:CGRect) {
-        bezierPath.moveToPoint(CGPointZero);
-        bezierPath.addLineToPoint(CGPointMake(rect.width, 0));
+    private func drawTopLine(_ bezierPath:UIBezierPath, rect:CGRect) {
+        bezierPath.move(to: CGPoint.zero);
+        bezierPath.addLine(to: CGPoint(x: rect.width, y: 0));
         self.topColor.setStroke();
         bezierPath.lineWidth = 1;
         bezierPath.stroke();
     }
     
-    private func drawBottomLine(bezierPath:UIBezierPath, rect:CGRect) {
-        bezierPath.moveToPoint(CGPointMake(0, rect.height));
-        bezierPath.addLineToPoint(CGPointMake(rect.width, rect.height));
+    private func drawBottomLine(_ bezierPath:UIBezierPath, rect:CGRect) {
+        bezierPath.move(to: CGPoint(x: 0, y: rect.height));
+        bezierPath.addLine(to: CGPoint(x: rect.width, y: rect.height));
         self.bottomColor.setStroke();
         bezierPath.lineWidth = 1;
         bezierPath.stroke();
     }
     
-    private func drawSelectedLine(bezierPath:UIBezierPath, rect:CGRect) {
-        bezierPath.moveToPoint(CGPointMake(0, rect.height));
-        bezierPath.addLineToPoint(CGPointMake(rect.width, rect.height));
+    private func drawSelectedLine(_ bezierPath:UIBezierPath, rect:CGRect) {
+        bezierPath.move(to: CGPoint(x: 0, y: rect.height));
+        bezierPath.addLine(to: CGPoint(x: rect.width, y: rect.height));
         self.selectedColor.setStroke();
         bezierPath.lineWidth = 5;
         bezierPath.stroke();
     }
     
     //MARK: Actions
-    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let onClick = self.onClick {
-            onClick(tabHost: self);
+            onClick(self);
         }
     }
 }
 
 @objc public protocol UITabHostDataSource:NSObjectProtocol {
-    func numberOfTabHostsWithContainer(container:UITabHostsContainer)->Int;
+    func numberOfTabHostsWithContainer(_ container:UITabHostsContainer)->Int;
     
-    optional func titleAtIndex(index:Int, container:UITabHostsContainer)->String?;
-    optional func viewAtIndex(index:Int, container:UITabHostsContainer)->UIView?;
+    @objc optional func titleAtIndex(_ index:Int, container:UITabHostsContainer)->String?;
+    @objc optional func viewAtIndex(_ index:Int, container:UITabHostsContainer)->UIView?;
 }
 
 @objc public protocol UITabHostDelegate:NSObjectProtocol {
-    optional func didSelectTabHost(index:Int, container:UITabHostsContainer);
+    @objc optional func didSelectTabHost(_ index:Int, container:UITabHostsContainer);
     
-    optional func topColorForTabHost(index:Int, container:UITabHostsContainer)->UIColor;
-    optional func bottomColorForTabHost(index:Int, container:UITabHostsContainer)->UIColor;
-    optional func selectedColorForTabHost(index:Int, container:UITabHostsContainer)->UIColor;
-    optional func titleColorForTabHost(index:Int, container:UITabHostsContainer)->UIColor;
-    optional func titleFontForTabHost(index:Int, container:UITabHostsContainer)->UIFont;
+    @objc optional func topColorForTabHost(_ index:Int, container:UITabHostsContainer)->UIColor;
+    @objc optional func bottomColorForTabHost(_ index:Int, container:UITabHostsContainer)->UIColor;
+    @objc optional func selectedColorForTabHost(_ index:Int, container:UITabHostsContainer)->UIColor;
+    @objc optional func titleColorForTabHost(_ index:Int, container:UITabHostsContainer)->UIColor;
+    @objc optional func titleFontForTabHost(_ index:Int, container:UITabHostsContainer)->UIFont;
 }
 
 
@@ -215,21 +215,21 @@ public class UITabHostsContainer: UIView {
     */
     func setupTabHostsContainer() {
         // init scroll view
-        scrollView = UIScrollView(frame: CGRectMake(0, 0, self.bounds.width, self.bounds.height));
-        scrollView.backgroundColor = UIColor.clearColor();
+        scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height));
+        scrollView.backgroundColor = UIColor.clear;
         scrollView.showsHorizontalScrollIndicator = false;
         scrollView.showsVerticalScrollIndicator = false;
-        scrollView.scrollEnabled = false;
+        scrollView.isScrollEnabled = false;
         addSubview(scrollView);
     }
     
     public override func layoutSubviews() {
         adjustScrolView();
         
-        for var i=0; i<tabArray.count; i++ {
+        for i in 0 ..< tabArray.count {
             let tabHost = tabArray[i];
             let width = tabHostWidthWithCapacity(tabArray.count);
-            tabHost.frame = CGRectMake(width*i, 0, width, scrollView.frame.height);
+            tabHost.frame = CGRect(x: width*i, y: 0, width: width, height: scrollView.frame.height);
             tabHost.layoutSubviews();
         }
     }
@@ -264,11 +264,11 @@ public class UITabHostsContainer: UIView {
     func adjustScrolView() {
         let width = self.tabHostWidthWithCapacity(tabArray.count) * tabArray.count;
         let height = scrollView.frame.height;
-        scrollView.contentSize = CGSizeMake(width, height);
+        scrollView.contentSize = CGSize(width: width, height: height);
         scrollView.frame = self.bounds;
     }
     
-    func createView(index:Int, capacity:Int){
+    func createView(_ index:Int, capacity:Int){
         var tabHost:UITabHost!;
         if let view = dataSource?.viewAtIndex?(index, container: self) {
             tabHost = createTabHostWithView(view, index: index, capacity: capacity);
@@ -292,16 +292,16 @@ public class UITabHostsContainer: UIView {
         }
     }
     
-    public func setSelected(index:Int) {
+    public func setSelected(_ index:Int) {
         if index < 0 || index > tabArray.count {
             return;
         }
         tabArray[index].selected = true;
     }
     
-    public func moveToCorrectPointOfScrollView(index:Int) {
+    public func moveToCorrectPointOfScrollView(_ index:Int) {
         if Int(index) < tabArray.count - 1 && Int(index) > 0 {
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 self.scrollView.contentOffset = self.tabArray[index - 1].frame.origin;
             })
         }
@@ -313,9 +313,9 @@ public class UITabHostsContainer: UIView {
         }
     }
     
-    func createTabHostWithTitle(title:String, index:Int, capacity:Int)->UITabHost {
+    func createTabHostWithTitle(_ title:String, index:Int, capacity:Int)->UITabHost {
         let width = tabHostWidthWithCapacity(capacity);
-        let tabHost = UITabHost(frame: CGRectMake(width*index, 0, width, self.frame.height));
+        let tabHost = UITabHost(frame: CGRect(x: width*index, y: 0, width: width, height: self.frame.height));
         if let title = dataSource?.titleAtIndex?(index, container: self) {
             tabHost.title = title;
         }
@@ -323,9 +323,9 @@ public class UITabHostsContainer: UIView {
         return tabHost;
     }
     
-    func createTabHostWithView(view:UIView, index:Int, capacity:Int)->UITabHost {
+    func createTabHostWithView(_ view:UIView, index:Int, capacity:Int)->UITabHost {
         let width = tabHostWidthWithCapacity(capacity);
-        let tabHost = UITabHost(frame: CGRectMake(width*index, 0, width, self.frame.height));
+        let tabHost = UITabHost(frame: CGRect(x: width*index, y: 0, width: width, height: self.frame.height));
         if let view = self.dataSource?.viewAtIndex?(index, container: self)  {
             tabHost.contentView = view;
         }
@@ -338,7 +338,7 @@ public class UITabHostsContainer: UIView {
     - parameter tabHost: the UITabHost to be setting
     - parameter index: the index of UITabHost
     */
-    func customizeTabHost(tabHost:UITabHost, index:Int) {
+    func customizeTabHost(_ tabHost:UITabHost, index:Int) {
         if let delegate = self.delegate {
             if let color = delegate.topColorForTabHost?(index, container: self) {
                 tabHost.topColor = color;
@@ -369,7 +369,7 @@ public class UITabHostsContainer: UIView {
     
     - returns: single tab host's width
     */
-    func tabHostWidthWithCapacity(capacity:Int)->CGFloat {
+    func tabHostWidthWithCapacity(_ capacity:Int)->CGFloat {
         switch(capacity) {
         case 1:
             return self.frame.width;

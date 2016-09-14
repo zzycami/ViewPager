@@ -12,7 +12,7 @@ import UIKit
 
 extension UIDevice {
     public class func systemVersionFloatValue()->Float {
-        return (UIDevice.currentDevice().systemVersion as NSString).floatValue;
+        return (UIDevice.current.systemVersion as NSString).floatValue;
     }
 }
 
@@ -42,8 +42,8 @@ extension UIViewController {
     Add the keyboard notification to current view that when keyboard showing, the view will shift to make the first responder view can be seen.
     */
     public func bindKeyboardNotification() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(UIViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(UIViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil);
     }
     
     /**
@@ -51,26 +51,26 @@ extension UIViewController {
     
     - parameter notification:
     */
-    func keyboardWillShow(notification:NSNotification) {
+    func keyboardWillShow(_ notification:Notification) {
         let firstResponder = self.view.findFirstResponderView();
         if firstResponder == nil {
             return;
         }
-        if !firstResponder!.isKindOfClass(UITextField.classForCoder()) {
+        if !firstResponder!.isKind(of: UITextField.classForCoder()) {
             return;
         }
-        let window = UIApplication.sharedApplication().keyWindow;
+        let window = UIApplication.shared.keyWindow;
         if window == nil {
             return;
         }
         
-        var responderFrame = window?.convertRect(firstResponder!.frame, fromView: firstResponder?.superview);
+        var responderFrame = window?.convert(firstResponder!.frame, from: firstResponder?.superview);
         
-        var userInfo = notification.userInfo;
+        var userInfo = (notification as NSNotification).userInfo;
         let value: NSValue = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue;
-        var keyboardRect = value.CGRectValue();
+        var keyboardRect = value.cgRectValue;
         let animationDurationValue: NSValue = userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSValue;
-        var animationDuration:NSTimeInterval = 0;
+        var animationDuration:TimeInterval = 0;
         animationDurationValue.getValue(&animationDuration);
         
         
@@ -85,26 +85,26 @@ extension UIViewController {
             x = x > 0 ?0:x;
             y = y > 0 ?0:y;
         }else {
-            let orientation = UIApplication.sharedApplication().statusBarOrientation;
-            if orientation == UIInterfaceOrientation.PortraitUpsideDown {
+            let orientation = UIApplication.shared.statusBarOrientation;
+            if orientation == UIInterfaceOrientation.portraitUpsideDown {
                 x = 0;
                 y = responderFrame!.y - keyboardRect.height;
-            }else if orientation == UIInterfaceOrientation.LandscapeLeft {
+            }else if orientation == UIInterfaceOrientation.landscapeLeft {
                 x = keyboardRect.width - responderFrame!.x;
                 y = 0;
-            }else if orientation == UIInterfaceOrientation.LandscapeRight {
+            }else if orientation == UIInterfaceOrientation.landscapeRight {
                 x = responderFrame!.x - keyboardRect.width;
                 y = 0;
-            }else if orientation == UIInterfaceOrientation.Portrait {
+            }else if orientation == UIInterfaceOrientation.portrait {
                 x = 0;
                 y = keyboardRect.height - responderFrame!.y;
             }
         }
         
-        let rect = CGRectMake(x, y, width, height);
+        let rect = CGRect(x: x, y: y, width: width, height: height);
         view.layoutIfNeeded();
         
-        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
             window!.frame = rect;
         });
     }
@@ -114,46 +114,46 @@ extension UIViewController {
     
     - parameter notification:
     */
-    func keyboardWillHide(notification:NSNotification) {
-        let window = UIApplication.sharedApplication().keyWindow;
+    func keyboardWillHide(_ notification:Notification) {
+        let window = UIApplication.shared.keyWindow;
         if window == nil {
             return;
         }
-        var userInfo = notification.userInfo!;
+        var userInfo = (notification as NSNotification).userInfo!;
         let animationDurationValue:NSValue = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSValue;
-        var animationDuration:NSTimeInterval = 0;
+        var animationDuration:TimeInterval = 0;
         animationDurationValue.getValue(&animationDuration);
-        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            window!.frame = CGRectMake(0, 0, window!.frame.width, window!.frame.height)
+        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
+            window!.frame = CGRect(x: 0, y: 0, width: window!.frame.width, height: window!.frame.height)
         });
     }
 }
 
 extension UIScrollView {
     public func bindKeyboardNotification() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(UIViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
     }
     
-    func keyboardWillShow(notification:NSNotification) {
+    func keyboardWillShow(_ notification:Notification) {
         let firstResponder = self.findFirstResponderView();
         if firstResponder == nil {
             return;
         }
-        if !firstResponder!.isKindOfClass(UITextField.classForCoder()) {
+        if !firstResponder!.isKind(of: UITextField.classForCoder()) {
             return;
         }
         
-        let respnderFrame = self.convertRect(firstResponder!.frame, fromView: firstResponder!.superview);
+        let respnderFrame = self.convert(firstResponder!.frame, from: firstResponder!.superview);
         self.scrollRectToVisible(respnderFrame, animated: true);
     }
 }
 
 extension UIColor {
-    class func colorWithRGB(value:Int)->UIColor {
+    class func colorWithRGB(_ value:Int)->UIColor {
         return self.colorWithRGB(value, alpha: 1)
     }
     
-    class func colorWithRGB(value:Int, alpha:CGFloat)->UIColor {
+    class func colorWithRGB(_ value:Int, alpha:CGFloat)->UIColor {
         let redValue = CGFloat((value & 0xFF0000) >> 16)/255.0;
         let greenValue = CGFloat((value & 0x00FF00) >> 8)/255.0;
         let blueValue = CGFloat(value & 0x0000FF)/255.0;
@@ -168,7 +168,7 @@ extension UIView {
     - returns: the first responder view.
     */
     public func findFirstResponderView()->UIView? {
-        if self.isFirstResponder() {
+        if self.isFirstResponder {
             return self;
         }
         
@@ -183,26 +183,26 @@ extension UIView {
 }
 
 extension NSString {
-    class public func isEmpty(string: NSString?)->Bool {
+    class public func isEmpty(_ string: NSString?)->Bool {
         if string == nil {
             return true;
         }
         
-        if !string!.isKindOfClass(NSString.classForCoder()) {
-            if string!.isKindOfClass(NSNull.classForCoder()) {
+        if !string!.isKind(of: NSString.classForCoder()) {
+            if string!.isKind(of: NSNull.classForCoder()) {
                 return true;
             }else {
                 return false;
             }
         }
         
-        if string!.trim().length == 0 {
+        if string!.trim().lengthOfBytes(using: String.Encoding.utf8) == 0 {
             return true;
         }
         return false;
     }
     
-    public func trim()->NSString {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
+    public func trim()->String {
+        return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines);
     }
 }
