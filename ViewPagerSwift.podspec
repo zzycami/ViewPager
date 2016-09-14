@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'ViewPagerSwift'
-  s.version = '1.0.0'
+  s.version = '1.0.1'
   s.license = 'Apache'
   s.summary = 'ViewPager UI Element like Android ViewPager in swift version'
   s.homepage = 'https://github.com/zzycami/ViewPager'
