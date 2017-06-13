@@ -51,7 +51,7 @@ extension UIViewController {
     
     - parameter notification:
     */
-    func keyboardWillShow(_ notification:Notification) {
+    @objc func keyboardWillShow(_ notification:Notification) {
         let firstResponder = self.view.findFirstResponderView();
         if firstResponder == nil {
             return;
@@ -114,7 +114,7 @@ extension UIViewController {
     
     - parameter notification:
     */
-    func keyboardWillHide(_ notification:Notification) {
+    @objc func keyboardWillHide(_ notification:Notification) {
         let window = UIApplication.shared.keyWindow;
         if window == nil {
             return;
